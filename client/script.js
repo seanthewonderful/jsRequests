@@ -236,11 +236,19 @@ document.querySelector("#query-button").addEventListener("click", attachQuery)
 // CODE HERE 
 let foodBtn = document.querySelector('#food-button')
 
-function createFood(){
+function createFood(event){
+    event.preventDefault()
     let foodInput = document.querySelector('input')
-    let body = {newFood: foodInput}
-    axios.get(`${baseURL}/food`, body)
-    .then(res => console.log(res.data))
+    let newPt = document.createElement('p')
+    let body = {newFood: foodInput.value}
+    axios.post(`${baseURL}/food`, body)
+    .then((res) => {
+        newPt.textContent = res.data
+        bodyTag.appendChild(newPt)
+        console.log(res.data)
+    }).catch(err => console.log(err))
+    foodInput.value = ''
 }
 
 foodBtn.addEventListener("click", createFood)
+
